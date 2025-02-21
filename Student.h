@@ -43,6 +43,7 @@ public:
 
     // Hiển thị thông tin sinh viên
     void display() const;
+    
 };
 
 // Hàm quản lý danh sách sinh viên
@@ -50,5 +51,7 @@ void addStudent(vector<Student> &students);
 void deleteStudent(vector<Student> &students);
 void updateStudent(vector<Student> &students);
 void searchStudent(const vector<Student> &students);
+void displayAllStudents(const vector<Student> &students);
+
 
 #endif // STUDENT_H
