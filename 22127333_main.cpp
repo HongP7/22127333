@@ -13,7 +13,8 @@ int main() {
 
     do {
         cout << "1. Add students\n2. Delete students\n3. Student Search\n4. Update Student Information\n5. Display All Students\n"
-             << "6. Manage Faculties\n7. Manage Student Statuses\n8. Manage Programs\n10.Exit\nSelect: ";
+             << "6. Manage Faculties\n7. Manage Student Statuses\n8. Manage Programs\n9. Search Student by Faculty\n10. Search Student by Faculty and Name\n"
+             << "11.Exit\nSelect: ";
         cin >> choice;
 
         switch (choice) {
@@ -25,10 +26,12 @@ int main() {
             case 6: manageFaculties(); break; // Gọi hàm quản lý khoa
             case 7: manageStatuses(); break;  // Gọi hàm quản lý trạng thái
             case 8: managePrograms(); break;  // Gọi hàm quản lý chương trình
-            case 9: cout << "Exit the program.\n"; break;
+            case 9: searchStudentByFaculty(students); break;
+            case 10: searchStudentByFacultyAndName(students); break;
+            case 11: cout << "Exit the program.\n"; break;
             default: cout << "Invalid Selection!\n";
         }
-    } while (choice != 6);
+    } while (choice != 11);
 
     return 0;
 }
