@@ -7,6 +7,7 @@ Giao diện chính để lựa chọn các chức năng
 - Nhấn "6" để Quản lý danh sách khoa
 
 ![image](https://github.com/user-attachments/assets/0154effd-ec87-43dd-857f-2c6f668351da)
+
 Chọn "1" để thay đổi tên khoa
 Chọn "2" để thêm tên khoa mới
 Chọn "3" để xem tất cả tên khoa đang có
