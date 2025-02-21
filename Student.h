@@ -53,5 +53,13 @@ void updateStudent(vector<Student> &students);
 void searchStudent(const vector<Student> &students);
 void displayAllStudents(const vector<Student> &students);
 
+//Ex2
+void manageFaculties();
+void manageStatuses();
+void managePrograms();
+void searchStudentByFaculty(const vector<Student> &students);
+void searchStudentByFacultyAndName(const vector<Student> &students);
+
+
 
 #endif // STUDENT_H
