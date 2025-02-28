@@ -8,6 +8,9 @@
 vector<string> validFaculties = {"Law Faculty", "Business English Faculty", "Japanese Faculty", "French Faculty"};
 vector<string> validStatuses = {"Studying", "Graduated", "Dropped out", "Paused"};
 vector<string> programs = {"CLC", "Advanced", "Standard"};
+
+//
+string validDomain = "student.university.edu.vn";
 // Getters
 string Student::getId() const { return id; }
 string Student::getName() const { return name; }
@@ -577,10 +580,10 @@ void manageStudents(vector<Student> &students) {
         cin >> choice;
         switch (choice) {
             case 1:
-                addStudentWithCheck(students);
+                addStudentWithCheck(students, validDomain);
                 break;
             case 2:
-                updateStudentWithCheck(students);
+                updateStudentWithCheck(students, validDomain);
                 break;
             case 3:
                 cout << "Exiting student management.\n";

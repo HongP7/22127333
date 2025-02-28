@@ -75,8 +75,8 @@ void loadFromFile(vector<Student> &students, const string &filename);
 //Ex3
 void manageStudents(vector<Student> &students);
 Student* findStudentById(vector<Student> &students, const string &id);
-void addStudentWithCheck(vector<Student> &students);
-void updateStudentWithCheck(vector<Student> &students) ;
+void addStudentWithCheck(vector<Student> &students, const string &validDomain);
+void updateStudentWithCheck(vector<Student> &students, const string &validDomain) ;
 
 bool isValidEmailDomain(const string &email, const string &domain);
 
