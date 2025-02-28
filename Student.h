@@ -21,7 +21,14 @@ public:
     // Getters & Setters
     string getId() const;
     string getName() const;
+    string getDob() const;
+    string getGender() const;
     string getFaculty() const;
+    string getCourse() const;
+    string getProgram() const;
+    string getAddress() const;
+    string getEmail() const;
+    string getPhone() const;
     string getStatus() const;
 
     void setName(string name);
@@ -54,14 +61,15 @@ void searchStudent(const vector<Student> &students);
 void displayAllStudents(const vector<Student> &students);
 
 //Ex2
-void manageFaculties();
-void manageStatuses();
-void managePrograms();
-void searchStudentByFaculty(const vector<Student> &students);
+void manageFaculties(); //allow renaming faculties, adding new faculties
+void manageStatuses(); //allow renaming student status, adding new statuses
+void managePrograms(); //allow renaming program, adding new program 
+//allow searching student by faculties, faculties + name 
+void searchStudentByFaculty(const vector<Student> &students); 
 void searchStudentByFacultyAndName(const vector<Student> &students);
-
-//test
-void test();
-void test3();
+//import students from CSV files
+void saveToFile(const vector<Student> &students, const string &filename);
+//save data into files
+void loadFromFile(vector<Student> &students, const string &filename);
 
 #endif // STUDENT_H

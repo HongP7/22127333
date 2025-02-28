@@ -32,6 +32,7 @@ int main() {
             default: cout << "Invalid Selection!\n";
         }
     } while (choice != 11);
+    loadFromFile(students, "data.csv");
 
     return 0;
 }

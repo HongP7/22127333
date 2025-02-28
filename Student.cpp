@@ -1,5 +1,7 @@
 #include "Student.h"
+#include <fstream>
 #include <regex>
+#include <sstream>
 
 // List of valid faculties and student statuses
 vector<string> validFaculties = {"Law Faculty", "Business English Faculty", "Japanese Faculty", "French Faculty"};
@@ -8,7 +10,14 @@ vector<string> programs = {"CLC", "Advanced", "Standard"};
 // Getters
 string Student::getId() const { return id; }
 string Student::getName() const { return name; }
+string Student::getDob() const { return dob; }
+string Student::getGender() const { return gender; }
 string Student::getFaculty() const { return faculty; }
+string Student::getCourse() const { return course; }
+string Student::getProgram() const { return program; }
+string Student::getAddress() const { return address; }
+string Student::getEmail() const { return email; }
+string Student::getPhone() const { return phone; }
 string Student::getStatus() const { return status; }
 
 // Setters
@@ -387,5 +396,73 @@ void searchStudentByFacultyAndName(const vector<Student> &students) {
     if (!found) {
         cout << "No students found matching the criteria.\n";
     }
+}
+
+
+
+void saveToFile(const vector<Student> &students, const string &filename) {
+    ofstream file(filename);
+
+    if (!file.is_open()) {
+        cout << "Error: Cannot open file " << filename << endl;
+        return;
+    }
+
+    // Ghi tiêu đề cột
+    file << "Student ID,Full Name,Date of Birth,Gender,Faculty,Course,Program,Address,Email,Phone,Status\n";
+
+    // Ghi dữ liệu từng sinh viên vào file
+    for (const auto &s : students) {
+        file << s.getId() << ","
+             << s.getName() << ","
+             << s.getDob() << ","
+             << s.getGender() << ","
+             << s.getFaculty() << ","
+             << s.getCourse() << ","
+             << s.getProgram() << ","
+             << s.getAddress() << ","
+             << s.getEmail() << ","
+             << s.getPhone() << ","
+             << s.getStatus() << "\n";
+    }
+
+    file.close();
+    cout << "Data successfully saved to " << filename << endl;
+}
+
+void loadFromFile(vector<Student> &students, const string &filename) {
+ifstream file(filename);
+
+if (!file.is_open()) {
+    cout << "Error: Cannot open file " << filename << endl;
+    return;
+}
+
+students.clear(); // Xóa dữ liệu cũ trong vector trước khi nạp mới
+
+string line;
+getline(file, line); // Bỏ qua dòng tiêu đề
+
+while (getline(file, line)) {
+    stringstream ss(line);
+    string studentID, fullName, dob, gender, faculty, course, program, address, email, phone, status;
+
+    getline(ss, studentID, ',');
+    getline(ss, fullName, ',');
+    getline(ss, dob, ',');
+    getline(ss, gender, ',');
+    getline(ss, faculty, ',');
+    getline(ss, course, ',');
+    getline(ss, program, ',');
+    getline(ss, address, ',');
+    getline(ss, email, ',');
+    getline(ss, phone, ',');
+    getline(ss, status, ',');
+
+    students.emplace_back(studentID, fullName, dob, gender, faculty, course, program, address, email, phone, status);
+}
+
+file.close();
+cout << "Data successfully loaded from " << filename << endl;
 }
 
