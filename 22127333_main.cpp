@@ -28,10 +28,11 @@ int main() {
             case 8: managePrograms(); break;  // Gọi hàm quản lý chương trình
             case 9: searchStudentByFaculty(students); break;
             case 10: searchStudentByFacultyAndName(students); break;
-            case 11: cout << "Exit the program.\n"; break;
+            case 11: manageStudents(students); break;
+            case 12: cout << "Exit the program.\n"; break;
             default: cout << "Invalid Selection!\n";
         }
-    } while (choice != 11);
+    } while (choice != 12);
     loadFromFile(students, "data.csv");
 
     return 0;

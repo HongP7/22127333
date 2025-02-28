@@ -78,5 +78,7 @@ Student* findStudentById(vector<Student> &students, const string &id);
 void addStudentWithCheck(vector<Student> &students);
 void updateStudentWithCheck(vector<Student> &students) ;
 
+bool isValidEmailDomain(const string &email, const string &domain);
+
 
 #endif // STUDENT_H

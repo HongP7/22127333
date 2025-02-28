@@ -477,7 +477,7 @@ Student* findStudentById(vector<Student> &students, const string &id) {
     return nullptr;
 }
 
-void addStudentWithCheck(vector<Student> &students) {
+void addStudentWithCheck(vector<Student> &students, const string &validDomain) {
     string id, name, dob, gender, faculty, course, program, address, email, phone, status;
     cout << "Enter student ID: ";
     cin >> id;
@@ -504,6 +504,10 @@ void addStudentWithCheck(vector<Student> &students) {
     getline(cin, address);
     cout << "Enter email: ";
     cin >> email;
+    if (!isValidEmailDomain(email, validDomain)) {
+        cout << "Invalid email domain. Cannot add student.\n";
+        return;
+    }
     cout << "Enter phone: ";
     cin >> phone;
     cout << "Enter status: ";
@@ -513,7 +517,7 @@ void addStudentWithCheck(vector<Student> &students) {
     cout << "Student added successfully.\n";
 }
 
-void updateStudentWithCheck(vector<Student> &students) {
+void updateStudentWithCheck(vector<Student> &students, const string &validDomain) {
     string id;
     cout << "Enter student ID to update: ";
     cin >> id;
@@ -542,6 +546,10 @@ void updateStudentWithCheck(vector<Student> &students) {
     getline(cin, address);
     cout << "Enter new email: ";
     cin >> email;
+    if (!isValidEmailDomain(email, validDomain)) {
+        cout << "Invalid email domain. Cannot update student.\n";
+        return;
+    }
     cout << "Enter new phone: ";
     cin >> phone;
     cout << "Enter new status: ";
@@ -583,4 +591,12 @@ void manageStudents(vector<Student> &students) {
     } while (choice != 3);
 }
 
+
+// Hàm kiểm tra email hợp lệ với tên miền cấu hình động
+bool isValidEmailDomain(const string &email, const string &domain) {
+    // Tạo biểu thức chính quy để kiểm tra email
+    string pattern = "^[\\w.-]+@" + domain + "$";
+    regex emailRegex(pattern);
+    return regex_match(email, emailRegex);
+}
 
