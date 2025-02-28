@@ -60,6 +60,7 @@ void managePrograms();
 void searchStudentByFaculty(const vector<Student> &students);
 void searchStudentByFacultyAndName(const vector<Student> &students);
 
-
+//test
+void test();
 
 #endif // STUDENT_H
