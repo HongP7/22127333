@@ -1,5 +1,6 @@
 #include "Student.h"
 #include <fstream>
+#include <algorithm>
 #include <regex>
 #include <sstream>
 
@@ -465,4 +466,121 @@ while (getline(file, line)) {
 file.close();
 cout << "Data successfully loaded from " << filename << endl;
 }
+
+// Ex3
+Student* findStudentById(vector<Student> &students, const string &id) {
+    for (auto &student : students) {
+        if (student.getId() == id) {
+            return &student;
+        }
+    }
+    return nullptr;
+}
+
+void addStudentWithCheck(vector<Student> &students) {
+    string id, name, dob, gender, faculty, course, program, address, email, phone, status;
+    cout << "Enter student ID: ";
+    cin >> id;
+    if (findStudentById(students, id) != nullptr) {
+        cout << "Student ID already exists. Cannot add student.\n";
+        return;
+    }
+    // Nhập các thông tin khác của sinh viên
+    cout << "Enter name: ";
+    cin.ignore();
+    getline(cin, name);
+    cout << "Enter date of birth (dd/mm/yyyy): ";
+    cin >> dob;
+    cout << "Enter gender: ";
+    cin >> gender;
+    cout << "Enter faculty: ";
+    cin >> faculty;
+    cout << "Enter course: ";
+    cin >> course;
+    cout << "Enter program: ";
+    cin >> program;
+    cout << "Enter address: ";
+    cin.ignore();
+    getline(cin, address);
+    cout << "Enter email: ";
+    cin >> email;
+    cout << "Enter phone: ";
+    cin >> phone;
+    cout << "Enter status: ";
+    cin >> status;
+
+    students.emplace_back(id, name, dob, gender, faculty, course, program, address, email, phone, status);
+    cout << "Student added successfully.\n";
+}
+
+void updateStudentWithCheck(vector<Student> &students) {
+    string id;
+    cout << "Enter student ID to update: ";
+    cin >> id;
+    Student* student = findStudentById(students, id);
+    if (student == nullptr) {
+        cout << "Student ID not found. Cannot update student.\n";
+        return;
+    }
+    // Nhập các thông tin mới của sinh viên
+    string name, dob, gender, faculty, course, program, address, email, phone, status;
+    cout << "Enter new name: ";
+    cin.ignore();
+    getline(cin, name);
+    cout << "Enter new date of birth (dd/mm/yyyy): ";
+    cin >> dob;
+    cout << "Enter new gender: ";
+    cin >> gender;
+    cout << "Enter new faculty: ";
+    cin >> faculty;
+    cout << "Enter new course: ";
+    cin >> course;
+    cout << "Enter new program: ";
+    cin >> program;
+    cout << "Enter new address: ";
+    cin.ignore();
+    getline(cin, address);
+    cout << "Enter new email: ";
+    cin >> email;
+    cout << "Enter new phone: ";
+    cin >> phone;
+    cout << "Enter new status: ";
+    cin >> status;
+
+    student->setName(name);
+    student->setDob(dob);
+    student->setGender(gender);
+    student->setFaculty(faculty);
+    student->setCourse(course);
+    student->setProgram(program);
+    student->setAddress(address);
+    student->setEmail(email);
+    student->setPhone(phone);
+    student->setStatus(status);
+
+    cout << "Student updated successfully.\n";
+}
+
+
+void manageStudents(vector<Student> &students) {
+    int choice;
+    do {
+        cout << "1. Add Student\n2. Update Student\n3. Exit\nSelect: ";
+        cin >> choice;
+        switch (choice) {
+            case 1:
+                addStudentWithCheck(students);
+                break;
+            case 2:
+                updateStudentWithCheck(students);
+                break;
+            case 3:
+                cout << "Exiting student management.\n";
+                break;
+            default:
+                cout << "Invalid selection! Please try again.\n";
+        }
+    } while (choice != 3);
+}
+
 

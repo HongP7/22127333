@@ -72,4 +72,11 @@ void saveToFile(const vector<Student> &students, const string &filename);
 //save data into files
 void loadFromFile(vector<Student> &students, const string &filename);
 
+//Ex3
+void manageStudents(vector<Student> &students);
+Student* findStudentById(vector<Student> &students, const string &id);
+void addStudentWithCheck(vector<Student> &students);
+void updateStudentWithCheck(vector<Student> &students) ;
+
+
 #endif // STUDENT_H
