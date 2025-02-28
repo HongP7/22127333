@@ -62,5 +62,6 @@ void searchStudentByFacultyAndName(const vector<Student> &students);
 
 //test
 void test();
+void test2();
 
 #endif // STUDENT_H
