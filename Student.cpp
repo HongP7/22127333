@@ -11,6 +11,7 @@ vector<string> programs = {"CLC", "Advanced", "Standard"};
 
 //
 string validDomain = "student.university.edu.vn";
+string countryCode = "+84";
 // Getters
 string Student::getId() const { return id; }
 string Student::getName() const { return name; }
@@ -480,7 +481,7 @@ Student* findStudentById(vector<Student> &students, const string &id) {
     return nullptr;
 }
 
-void addStudentWithCheck(vector<Student> &students, const string &validDomain) {
+void addStudentWithCheck(vector<Student> &students, const string &validDomain, const string &countryCode) {
     string id, name, dob, gender, faculty, course, program, address, email, phone, status;
     cout << "Enter student ID: ";
     cin >> id;
@@ -513,6 +514,10 @@ void addStudentWithCheck(vector<Student> &students, const string &validDomain) {
     }
     cout << "Enter phone: ";
     cin >> phone;
+    if (!isValidPhoneNumber(phone, countryCode)) {
+        cout << "Invalid phone number. Cannot add student.\n";
+        return;
+    }
     cout << "Enter status: ";
     cin >> status;
 
@@ -520,7 +525,7 @@ void addStudentWithCheck(vector<Student> &students, const string &validDomain) {
     cout << "Student added successfully.\n";
 }
 
-void updateStudentWithCheck(vector<Student> &students, const string &validDomain) {
+void updateStudentWithCheck(vector<Student> &students, const string &validDomain, const string &countryCode) {
     string id;
     cout << "Enter student ID to update: ";
     cin >> id;
@@ -555,6 +560,10 @@ void updateStudentWithCheck(vector<Student> &students, const string &validDomain
     }
     cout << "Enter new phone: ";
     cin >> phone;
+    if (!isValidPhoneNumber(phone, countryCode)) {
+        cout << "Invalid phone number. Cannot update student.\n";
+        return;
+    }
     cout << "Enter new status: ";
     cin >> status;
 
@@ -572,7 +581,6 @@ void updateStudentWithCheck(vector<Student> &students, const string &validDomain
     cout << "Student updated successfully.\n";
 }
 
-
 void manageStudents(vector<Student> &students) {
     int choice;
     do {
@@ -580,10 +588,10 @@ void manageStudents(vector<Student> &students) {
         cin >> choice;
         switch (choice) {
             case 1:
-                addStudentWithCheck(students, validDomain);
+                addStudentWithCheck(students, validDomain, countryCode);
                 break;
             case 2:
-                updateStudentWithCheck(students, validDomain);
+                updateStudentWithCheck(students, validDomain, countryCode);
                 break;
             case 3:
                 cout << "Exiting student management.\n";
@@ -603,3 +611,10 @@ bool isValidEmailDomain(const string &email, const string &domain) {
     return regex_match(email, emailRegex);
 }
 
+// Hàm kiểm tra số điện thoại hợp lệ với mã quốc gia cấu hình động
+bool isValidPhoneNumber(const string &phone, const string &countryCode) {
+    // Tạo biểu thức chính quy để kiểm tra số điện thoại
+    string pattern = "^" + countryCode + "\\d{9,10}$";
+    regex phoneRegex(pattern);
+    return regex_match(phone, phoneRegex);
+}
