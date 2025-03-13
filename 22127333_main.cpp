@@ -1,39 +1,40 @@
 #include "Student.h"
+#include <iostream>
 
 int main() {
-    vector<Student> students = {
-        {"22127333", "Nguyen Hong Phuc", "07/02/2004", "Male", "Law Faculty", "22", "CLC", "Ho Chi Minh City", "nhphuc22@gmail.com", "0892983744", "Studying"},
-        {"22128456", "Tran Thi Minh Chau", "15/06/2003", "Female", "Business English Faculty", "22", "Standard", "Ha Noi", "ttmchau03@gmail.com", "0912345678", "Graduated"},
-        {"22129567", "Le Van Duc", "23/09/2005", "Male", "Japanese Faculty", "22", "CLC", "Da Nang", "lvduc05@yahoo.com", "0823456789", "Studying"},
-        {"22121234", "Pham Hoang Nam", "11/11/2002", "Male", "French Faculty", "22", "Advanced", "Can Tho", "phnam02@hotmail.com", "0908765432", "Dropped out"},
-        {"22127890", "Vo Thi Kim Ngan", "30/12/2004", "Female", "Law Faculty", "23", "Standard", "Hue", "vtkngan04@gmail.com", "0834567890", "Paused"}
-    };
-    
+    vector<Student> students;
+    //loadFromCSVFile(students, "data.csv");
+    loadFromXMLFile(students, "data.xml");
     int choice;
 
     do {
-        cout << "1. Add students\n2. Delete students\n3. Student Search\n4. Update Student Information\n5. Display All Students\n"
-             << "6. Manage Faculties\n7. Manage Student Statuses\n8. Manage Programs\n9. Search Student by Faculty\n10. Search Student by Faculty and Name\n"
-             << "11.Exit\nSelect: ";
+        cout << "0. Display All Students\n";
+        cout << "1. Add students\n2. Delete students\n3. Update Student Information\n4. Student Search\n";
+        cout << "5. Manage Faculties\n6. Manage Student Statuses\n7. Manage Programs\n8. Search Student by Faculty\n9. Search Student by Faculty and Name\n";
+        cout << "";
+        cout << "11.Exit\nSelect: ";
         cin >> choice;
 
         switch (choice) {
+            case 0: displayAllStudents(students); break;
+            //Ex01
             case 1: addStudent(students); break;
             case 2: deleteStudent(students); break;
-            case 3: searchStudent(students); break;
-            case 4: updateStudent(students); break;
-            case 5: displayAllStudents(students); break;
-            case 6: manageFaculties(); break; // Gọi hàm quản lý khoa
-            case 7: manageStatuses(); break;  // Gọi hàm quản lý trạng thái
-            case 8: managePrograms(); break;  // Gọi hàm quản lý chương trình
-            case 9: searchStudentByFaculty(students); break;
-            case 10: searchStudentByFacultyAndName(students); break;
-            case 11: manageStudents(students); break;
+            case 3: updateStudent(students); break;
+            case 4: searchStudent(students); break;
+            //Ex02
+            case 5: manageFaculties(); break; // Gọi hàm quản lý khoa
+            case 6: manageStatuses(); break;  // Gọi hàm quản lý trạng thái
+            case 7: managePrograms(); break;  // Gọi hàm quản lý chương trình
+            case 8: searchStudentByFaculty(students); break; // Tìm kiến sinh viên bằng tên khoa
+            case 9: searchStudentByFacultyAndName(students); break; // Tìm kiến sinh viên bằng tên khoa và tên sinh viên 
+            //Ex03
+            case 10: manageStudents(students); break;
             case 12: cout << "Exit the program.\n"; break;
             default: cout << "Invalid Selection!\n";
         }
     } while (choice != 12);
-    loadFromFile(students, "data.csv");
+    saveToFile(students, "data.csv");
 
     return 0;
 }

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Students>
+    <Student>
+        <StudentID>22127333</StudentID>
+        <FullName>Nguyen Hong Phuc</FullName>
+        <DateOfBirth>07/02/2004</DateOfBirth>
+        <Gender>Male</Gender>
+        <Faculty>Law Faculty</Faculty>
+        <Course>22</Course>
+        <Program>CLC</Program>
+        <Address>Ho Chi Minh City</Address>
+        <Email>nhphuc22@gmail.com</Email>
+        <Phone>0892983744</Phone>
+        <Status>Studying</Status>
+    </Student>
+    <Student>
+        <StudentID>22128456</StudentID>
+        <FullName>Tran Thi Minh Chau</FullName>
+        <DateOfBirth>15/06/2003</DateOfBirth>
+        <Gender>Female</Gender>
+        <Faculty>Business English Faculty</Faculty>
+        <Course>22</Course>
+        <Program>Standard</Program>
+        <Address>Ha Noi</Address>
+        <Email>ttmchau03@gmail.com</Email>
+        <Phone>0912345678</Phone>
+        <Status>Graduated</Status>
+    </Student>
+    <Student>
+        <StudentID>22129567</StudentID>
+        <FullName>Le Van Duc</FullName>
+        <DateOfBirth>23/09/2005</DateOfBirth>
+        <Gender>Male</Gender>
+        <Faculty>Japanese Faculty</Faculty>
+        <Course>22</Course>
+        <Program>CLC</Program>
+        <Address>Da Nang</Address>
+        <Email>lvduc05@yahoo.com</Email>
+        <Phone>0823456789</Phone>
+        <Status>Studying</Status>
+    </Student>
+    <Student>
+        <StudentID>22121234</StudentID>
+        <FullName>Pham Hoang Nam</FullName>
+        <DateOfBirth>11/11/2002</DateOfBirth>
+        <Gender>Male</Gender>
+        <Faculty>French Faculty</Faculty>
+        <Course>22</Course>
+        <Program>Advanced</Program>
+        <Address>Can Tho</Address>
+        <Email>phnam02@hotmail.com</Email>
+        <Phone>0908765432</Phone>
+        <Status>Dropped out</Status>
+    </Student>
+    <Student>
+        <StudentID>22127890</StudentID>
+        <FullName>Vo Thi Kim Ngan</FullName>
+        <DateOfBirth>30/12/2004</DateOfBirth>
+        <Gender>Female</Gender>
+        <Faculty>Law Faculty</Faculty>
+        <Course>23</Course>
+        <Program>Standard</Program>
+        <Address>Hue</Address>
+        <Email>vtkngan04@gmail.com</Email>
+        <Phone>0834567890</Phone>
+        <Status>Paused</Status>
+    </Student>
+</Students>

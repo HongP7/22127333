@@ -1,7 +1,7 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
-#include <iostream>
+
 #include <vector>
 #include <string>
 
@@ -13,6 +13,7 @@ private:
 
 public:
     // Constructor
+    Student() = default;
     Student(string id, string name, string dob, string gender, string faculty,
             string course, string program, string address, string email, string phone, string status)
             : id(id), name(name), dob(dob), gender(gender), faculty(faculty),
@@ -70,14 +71,15 @@ void searchStudentByFacultyAndName(const vector<Student> &students);
 //import students from CSV files
 void saveToFile(const vector<Student> &students, const string &filename);
 //save data into files
-void loadFromFile(vector<Student> &students, const string &filename);
+void loadFromCSVFile(vector<Student> &students, const string &filename);
+void loadFromXMLFile(vector<Student> &students, const string &filename);
+
 
 //Ex3
 void manageStudents(vector<Student> &students);
 Student* findStudentById(vector<Student> &students, const string &id);
 void addStudentWithCheck(vector<Student> &students, const string &validDomain, const string &countryCode);
 void updateStudentWithCheck(vector<Student> &students, const string &validDomain, const string &countryCode) ;
-
 bool isValidEmailDomain(const string &email, const string &domain);
 
 

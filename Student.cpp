@@ -1,8 +1,10 @@
 #include "Student.h"
+#include <iostream>
 #include <fstream>
 #include <algorithm>
 #include <regex>
 #include <sstream>
+using namespace std;
 
 // List of valid faculties and student statuses
 vector<string> validFaculties = {"Law Faculty", "Business English Faculty", "Japanese Faculty", "French Faculty"};
@@ -403,8 +405,6 @@ void searchStudentByFacultyAndName(const vector<Student> &students) {
     }
 }
 
-
-
 void saveToFile(const vector<Student> &students, const string &filename) {
     ofstream file(filename);
 
@@ -435,40 +435,82 @@ void saveToFile(const vector<Student> &students, const string &filename) {
     cout << "Data successfully saved to " << filename << endl;
 }
 
-void loadFromFile(vector<Student> &students, const string &filename) {
-ifstream file(filename);
+void loadFromCSVFile(vector<Student> &students, const string &filename) {
+    ifstream file(filename);
 
-if (!file.is_open()) {
-    cout << "Error: Cannot open file " << filename << endl;
-    return;
+    if (!file.is_open()) {
+        cout << "Error: Cannot open file " << filename << endl;
+        return;
+    }
+
+    students.clear(); // Xóa dữ liệu cũ trong vector trước khi nạp mới
+
+    string line;
+    getline(file, line); // Bỏ qua dòng tiêu đề
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string studentID, fullName, dob, gender, faculty, course, program, address, email, phone, status;
+
+        getline(ss, studentID, ',');
+        getline(ss, fullName, ',');
+        getline(ss, dob, ',');
+        getline(ss, gender, ',');
+        getline(ss, faculty, ',');
+        getline(ss, course, ',');
+        getline(ss, program, ',');
+        getline(ss, address, ',');
+        getline(ss, email, ',');
+        getline(ss, phone, ',');
+        getline(ss, status, ',');
+
+        students.emplace_back(studentID, fullName, dob, gender, faculty, course, program, address, email, phone, status);
+    }
+    file.close();
 }
 
-students.clear(); // Xóa dữ liệu cũ trong vector trước khi nạp mới
-
-string line;
-getline(file, line); // Bỏ qua dòng tiêu đề
-
-while (getline(file, line)) {
-    stringstream ss(line);
-    string studentID, fullName, dob, gender, faculty, course, program, address, email, phone, status;
-
-    getline(ss, studentID, ',');
-    getline(ss, fullName, ',');
-    getline(ss, dob, ',');
-    getline(ss, gender, ',');
-    getline(ss, faculty, ',');
-    getline(ss, course, ',');
-    getline(ss, program, ',');
-    getline(ss, address, ',');
-    getline(ss, email, ',');
-    getline(ss, phone, ',');
-    getline(ss, status, ',');
-
-    students.emplace_back(studentID, fullName, dob, gender, faculty, course, program, address, email, phone, status);
+string extractValue(const string &line, const string &tag) {
+    size_t start = line.find("<" + tag + ">");
+    size_t end = line.find("</" + tag + ">");
+    if (start == string::npos || end == string::npos) return "";
+    start += tag.length() + 2;  // Để bỏ qua <tag>
+    return line.substr(start, end - start);
 }
 
-file.close();
-cout << "Data successfully loaded from " << filename << endl;
+// Hàm đọc dữ liệu từ file XML và lưu vào vector<Student>
+void loadFromXMLFile(vector<Student> &students, const string &filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Error: Cannot open file " << filename << endl;
+        return;
+    }
+
+    students.clear();
+    string id, name, dob, gender, faculty, course, program, address, email, phone, status;
+    string line;
+
+    while (getline(file, line)) {
+        if (line.find("<Student>") != string::npos) { 
+            // Bắt đầu một sinh viên mới -> reset các biến
+            id = name = dob = gender = faculty = course = program = address = email = phone = status = "";
+        } else if (line.find("<StudentID>") != string::npos) id = extractValue(line, "StudentID");
+        else if (line.find("<FullName>") != string::npos) name = extractValue(line, "FullName");
+        else if (line.find("<DateOfBirth>") != string::npos) dob = extractValue(line, "DateOfBirth");
+        else if (line.find("<Gender>") != string::npos) gender = extractValue(line, "Gender");
+        else if (line.find("<Faculty>") != string::npos) faculty = extractValue(line, "Faculty");
+        else if (line.find("<Course>") != string::npos) course = extractValue(line, "Course");
+        else if (line.find("<Program>") != string::npos) program = extractValue(line, "Program");
+        else if (line.find("<Address>") != string::npos) address = extractValue(line, "Address");
+        else if (line.find("<Email>") != string::npos) email = extractValue(line, "Email");
+        else if (line.find("<Phone>") != string::npos) phone = extractValue(line, "Phone");
+        else if (line.find("<Status>") != string::npos) status = extractValue(line, "Status");
+        else if (line.find("</Student>") != string::npos) { 
+            // Kết thúc sinh viên, thêm vào danh sách bằng emplace_back
+            students.emplace_back(id, name, dob, gender, faculty, course, program, address, email, phone, status);
+        }
+    }
+
+    file.close();
 }
 
 // Ex3
@@ -618,3 +660,4 @@ bool isValidPhoneNumber(const string &phone, const string &countryCode) {
     regex phoneRegex(pattern);
     return regex_match(phone, phoneRegex);
 }
+
