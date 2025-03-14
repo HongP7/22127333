@@ -12,7 +12,7 @@ int main() {
         cout << "1. Add students\n2. Delete students\n3. Update Student Information\n4. Student Search\n";
         cout << "5. Manage Faculties\n6. Manage Student Statuses\n7. Manage Programs\n8. Search Student by Faculty\n9. Search Student by Faculty and Name\n";
         cout << "";
-        cout << "11.Exit\nSelect: ";
+        cout << "10.Exit\nSelect: ";
         cin >> choice;
 
         switch (choice) {
@@ -28,12 +28,11 @@ int main() {
             case 7: managePrograms(); break;  // Gọi hàm quản lý chương trình
             case 8: searchStudentByFaculty(students); break; // Tìm kiến sinh viên bằng tên khoa
             case 9: searchStudentByFacultyAndName(students); break; // Tìm kiến sinh viên bằng tên khoa và tên sinh viên 
-            //Ex03
-            case 10: manageStudents(students); break;
-            case 12: cout << "Exit the program.\n"; break;
+
+            case 10: cout << "Exit the program.\n"; break;
             default: cout << "Invalid Selection!\n";
         }
-    } while (choice != 12);
+    } while (choice != 10);
     saveToFile(students, "data.csv");
 
     return 0;

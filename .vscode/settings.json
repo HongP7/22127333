@@ -63,6 +63,7 @@
     "vector": "cpp",
     "iosfwd": "cpp",
     "fstream": "cpp",
-    "*.tcc": "cpp"
+    "*.tcc": "cpp",
+    "text_encoding": "cpp"
   }
 }

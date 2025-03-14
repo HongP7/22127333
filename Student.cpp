@@ -28,6 +28,7 @@ string Student::getPhone() const { return phone; }
 string Student::getStatus() const { return status; }
 
 // Setters
+void Student::setID(string id) { this->id = id; }
 void Student::setName(string name) { this->name = name; }
 void Student::setDob(string dob) { this->dob = dob; }
 void Student::setGender(string gender) { this->gender = gender; }
@@ -39,19 +40,14 @@ void Student::setEmail(string email) { this->email = email; }
 void Student::setPhone(string phone) { this->phone = phone; }
 void Student::setStatus(string status) { this->status = status; }
 
-// Email validation
-bool Student::isValidEmail(const string &email) {
-    return regex_match(email, regex(R"(^[a-zA-Z0-9._%+-]+@gmail\.com$)"));
-}
-
-// Phone number validation
-bool Student::isValidPhone(const string &phone) {
-    return regex_match(phone, regex(R"(^0\d{9}$)"));
-}
-
 // Faculty validation
 bool Student::isValidFaculty(const string &faculty) {
     return find(validFaculties.begin(), validFaculties.end(), faculty) != validFaculties.end();
+}
+
+// programs validation
+bool Student::isValidPrograms(const string &programs_) {
+    return find(programs.begin(), programs.end(), programs_) != programs.end();
 }
 
 // Status validation
@@ -69,21 +65,55 @@ void Student::display() const {
 void addStudent(vector<Student> &students) {
     string id, name, dob, gender, faculty, course, program, address, email, phone, status;
 
-    cout << "Enter Student ID: "; cin >> id;
+    do {
+        cout << "Enter student ID: ";
+        cin >> id;
+
+        if (findStudentById(students, id) != nullptr) 
+            cout << "Student ID already exists. Please enter a new ID.\n";
+        else 
+            break; 
+    } while (true);
+
     cin.ignore();
     cout << "Enter Full Name: "; getline(cin, name);
-    cout << "Enter Date of Birth: "; getline(cin, dob);
-    cout << "Enter Gender: "; getline(cin, gender);
-    cout << "Enter Faculty: "; getline(cin, faculty);
-    cout << "Enter Course: "; getline(cin, course);
-    cout << "Enter Program: "; getline(cin, program);
-    cout << "Enter Address: "; getline(cin, address);
-    cout << "Enter Email: "; getline(cin, email);
-    cout << "Enter Phone Number: "; getline(cin, phone);
-    cout << "Enter Status: "; getline(cin, status);
+    cout << "Enter Date of Birth(dd/mm/yyyy): "; getline(cin, dob);
+    cout << "Enter Gender(Male/Female): "; getline(cin, gender);
 
-    if (!Student::isValidEmail(email) || !Student::isValidPhone(phone) ||
-        !Student::isValidFaculty(faculty) || !Student::isValidStatus(status)) {
+    cout << "Enter Faculty(";
+    for (int i=0; i < validFaculties.size() - 1; i++) 
+        cout << validFaculties[i] << ", ";
+    cout << validFaculties[validFaculties.size()-1] << "): "; 
+    getline(cin, faculty);
+
+    cout << "Enter Course: "; getline(cin, course);
+    cout << "Enter Program(";
+    for (int i=0; i < programs.size() - 1; i++) 
+        cout << programs[i] << ", ";
+    cout << programs[programs.size()-1];
+    cout << "): "; getline(cin, program);
+
+    cout << "Enter Address: "; getline(cin, address);
+    do {
+        cout << "Enter Email(ABC@" << validDomain << "): "; getline(cin, email);
+        if (!isValidEmailDomain(email, validDomain)) 
+            cout << "Invalid email domain. Cannot update student.\n";
+        else break;
+        } while (true); 
+    do {    
+        cout << "Enter Phone Number(" << countryCode << "): "; getline(cin, phone);
+        if (!isValidPhoneNumber(phone, countryCode)) 
+            cout << "Invalid phone number. Cannot update student.\n";
+        else break;
+        } while (true);
+
+    cout << "Enter Status(";
+    for (int i=0; i < validStatuses.size() - 1; i++) 
+        cout << validStatuses[i] << ", ";
+    cout << validStatuses[validStatuses.size()-1];
+    cout << "): "; getline(cin, status);
+
+    if (!Student::isValidFaculty(faculty) || !Student::isValidStatus(status)) {
         cout << "Invalid information. Please try again.\n";
         return;
     }
@@ -101,9 +131,8 @@ void deleteStudent(vector<Student> &students) {
     if (it != students.end()) {
         students.erase(it, students.end());
         cout << "Student deleted successfully!\n";
-    } else {
+    } else 
         cout << "Student not found!\n";
-    }
 }
 
 void searchStudent(const vector<Student> &students) {
@@ -141,13 +170,12 @@ void updateStudent(vector<Student> &students) {
     cout << "Enter Student ID to update: ";
     cin >> studentId;
 
-    // Tìm kiếm sinh viên trong danh sách
     for (auto &s : students) {
         if (s.getId() == studentId) {
             int choice;
             do {
                 cout << "\nWhat do you want to update?\n";
-                cout << "1. Full Name\n2. Date of Birth\n3. Gender\n4. Faculty\n";
+                cout << "0. ID\n1. Full Name\n2. Date of Birth\n3. Gender\n4. Faculty\n";
                 cout << "5. Course\n6. Program\n7. Address\n8. Email\n9. Phone Number\n";
                 cout << "10. Status\n11. Exit Update\n";
                 cout << "Choose an option: ";
@@ -156,29 +184,42 @@ void updateStudent(vector<Student> &students) {
 
                 string newValue;
                 switch (choice) {
+                    case 0:
+                        do {
+                            cout << "Enter student ID: ";
+                            getline(cin, newValue);
+                    
+                            if (findStudentById(students, newValue) != nullptr) 
+                                cout << "Student ID already exists. Please enter a new ID.\n";
+                            else 
+                                s.setID(newValue);
+                        } while (true);
+                        break;
                     case 1:
                         cout << "Enter new Full Name: ";
                         getline(cin, newValue);
                         s.setName(newValue);
                         break;
                     case 2:
-                        cout << "Enter new Date of Birth: ";
+                        cout << "Enter new Date of Birth(dd/mm/yyyy): ";
                         getline(cin, newValue);
                         s.setDob(newValue);
                         break;
                     case 3:
-                        cout << "Enter new Gender: ";
+                        cout << "Enter new Gender(Male/Female): ";
                         getline(cin, newValue);
                         s.setGender(newValue);
                         break;
                     case 4:
-                        cout << "Enter new Faculty: ";
+                        cout << "Enter new Faculty(";
+                        for (int i=0; i < validFaculties.size() - 1; i++) 
+                            cout << validFaculties[i] << ", ";
+                        cout << validFaculties[validFaculties.size()-1] << "): ";
                         getline(cin, newValue);
-                        if (Student::isValidFaculty(newValue)) {
+                        if (Student::isValidFaculty(newValue)) 
                             s.setFaculty(newValue);
-                        } else {
+                        else 
                             cout << "Invalid Faculty!\n";
-                        }
                         break;
                     case 5:
                         cout << "Enter new Course: ";
@@ -187,8 +228,14 @@ void updateStudent(vector<Student> &students) {
                         break;
                     case 6:
                         cout << "Enter new Program: ";
+                        for (int i=0; i < programs.size() - 1; i++) 
+                            cout << programs[i] << ", ";
+                        cout << programs[programs.size()-1] << "): ";
                         getline(cin, newValue);
-                        s.setProgram(newValue);
+                        if (Student::isValidFaculty(newValue)) 
+                            s.setProgram(newValue);
+                        else 
+                            cout << "Invalid Programs!\n";
                         break;
                     case 7:
                         cout << "Enter new Address: ";
@@ -196,28 +243,27 @@ void updateStudent(vector<Student> &students) {
                         s.setAddress(newValue);
                         break;
                     case 8:
-                        cout << "Enter new Email: ";
-                        getline(cin, newValue);
-                        if (Student::isValidEmail(newValue)) {
-                            s.setEmail(newValue);
-                        } else {
-                            cout << "Invalid Email! Must end with '@gmail.com'\n";
-                        }
+                        do {
+                            cout << "Enter Email(ABC@" << validDomain << "): "; getline(cin, newValue);
+                            if (!isValidEmailDomain(newValue, validDomain)) 
+                                cout << "Invalid email domain. Cannot update student.\n";
+                            else  s.setEmail(newValue);
+                            } while (true); 
                         break;
                     case 9:
-                        cout << "Enter new Phone Number: ";
-                        getline(cin, newValue);
-                        if (Student::isValidPhone(newValue)) {
-                            s.setPhone(newValue);
-                        } else {
-                            cout << "Invalid Phone Number! Must start with 0 and have 10 digits.\n";
-                        }
+                        do {
+                            cout << "Enter Phone Number(" << countryCode << "): "; getline(cin, newValue);
+                            if (!isValidEmailDomain(newValue, validDomain)) 
+                                cout << "Invalid phone number. Cannot update student.\n";
+                            else  s.setEmail(newValue);
+                            } while (true); 
                         break;
                     case 10:
                         cout << "Enter new Status: ";
                         getline(cin, newValue);
                         if (Student::isValidStatus(newValue)) {
-                            s.setStatus(newValue);
+                            if(checkStatus(s.getStatus(), newValue))
+                                s.setStatus(newValue);
                         } else {
                             cout << "Invalid Status!\n";
                         }
@@ -235,7 +281,6 @@ void updateStudent(vector<Student> &students) {
     }
     cout << "Student ID not found!\n";
 }
-
 
 //EX2
 void manageFaculties() {
@@ -523,129 +568,6 @@ Student* findStudentById(vector<Student> &students, const string &id) {
     return nullptr;
 }
 
-void addStudentWithCheck(vector<Student> &students, const string &validDomain, const string &countryCode) {
-    string id, name, dob, gender, faculty, course, program, address, email, phone, status;
-    cout << "Enter student ID: ";
-    cin >> id;
-    if (findStudentById(students, id) != nullptr) {
-        cout << "Student ID already exists. Cannot add student.\n";
-        return;
-    }
-    // Nhập các thông tin khác của sinh viên
-    cout << "Enter name: ";
-    cin.ignore();
-    getline(cin, name);
-    cout << "Enter date of birth (dd/mm/yyyy): ";
-    cin >> dob;
-    cout << "Enter gender: ";
-    cin >> gender;
-    cout << "Enter faculty: ";
-    cin >> faculty;
-    cout << "Enter course: ";
-    cin >> course;
-    cout << "Enter program: ";
-    cin >> program;
-    cout << "Enter address: ";
-    cin.ignore();
-    getline(cin, address);
-    cout << "Enter email: ";
-    cin >> email;
-    if (!isValidEmailDomain(email, validDomain)) {
-        cout << "Invalid email domain. Cannot add student.\n";
-        return;
-    }
-    cout << "Enter phone: ";
-    cin >> phone;
-    if (!isValidPhoneNumber(phone, countryCode)) {
-        cout << "Invalid phone number. Cannot add student.\n";
-        return;
-    }
-    cout << "Enter status: ";
-    cin >> status;
-
-    students.emplace_back(id, name, dob, gender, faculty, course, program, address, email, phone, status);
-    cout << "Student added successfully.\n";
-}
-
-void updateStudentWithCheck(vector<Student> &students, const string &validDomain, const string &countryCode) {
-    string id;
-    cout << "Enter student ID to update: ";
-    cin >> id;
-    Student* student = findStudentById(students, id);
-    if (student == nullptr) {
-        cout << "Student ID not found. Cannot update student.\n";
-        return;
-    }
-    // Nhập các thông tin mới của sinh viên
-    string name, dob, gender, faculty, course, program, address, email, phone, status;
-    cout << "Enter new name: ";
-    cin.ignore();
-    getline(cin, name);
-    cout << "Enter new date of birth (dd/mm/yyyy): ";
-    cin >> dob;
-    cout << "Enter new gender: ";
-    cin >> gender;
-    cout << "Enter new faculty: ";
-    cin >> faculty;
-    cout << "Enter new course: ";
-    cin >> course;
-    cout << "Enter new program: ";
-    cin >> program;
-    cout << "Enter new address: ";
-    cin.ignore();
-    getline(cin, address);
-    cout << "Enter new email: ";
-    cin >> email;
-    if (!isValidEmailDomain(email, validDomain)) {
-        cout << "Invalid email domain. Cannot update student.\n";
-        return;
-    }
-    cout << "Enter new phone: ";
-    cin >> phone;
-    if (!isValidPhoneNumber(phone, countryCode)) {
-        cout << "Invalid phone number. Cannot update student.\n";
-        return;
-    }
-    cout << "Enter new status: ";
-    cin >> status;
-
-    student->setName(name);
-    student->setDob(dob);
-    student->setGender(gender);
-    student->setFaculty(faculty);
-    student->setCourse(course);
-    student->setProgram(program);
-    student->setAddress(address);
-    student->setEmail(email);
-    student->setPhone(phone);
-    student->setStatus(status);
-
-    cout << "Student updated successfully.\n";
-}
-
-void manageStudents(vector<Student> &students) {
-    int choice;
-    do {
-        cout << "1. Add Student\n2. Update Student\n3. Exit\nSelect: ";
-        cin >> choice;
-        switch (choice) {
-            case 1:
-                addStudentWithCheck(students, validDomain, countryCode);
-                break;
-            case 2:
-                updateStudentWithCheck(students, validDomain, countryCode);
-                break;
-            case 3:
-                cout << "Exiting student management.\n";
-                break;
-            default:
-                cout << "Invalid selection! Please try again.\n";
-        }
-    } while (choice != 3);
-}
-
-
-// Hàm kiểm tra email hợp lệ với tên miền cấu hình động
 bool isValidEmailDomain(const string &email, const string &domain) {
     // Tạo biểu thức chính quy để kiểm tra email
     string pattern = "^[\\w.-]+@" + domain + "$";
@@ -653,7 +575,6 @@ bool isValidEmailDomain(const string &email, const string &domain) {
     return regex_match(email, emailRegex);
 }
 
-// Hàm kiểm tra số điện thoại hợp lệ với mã quốc gia cấu hình động
 bool isValidPhoneNumber(const string &phone, const string &countryCode) {
     // Tạo biểu thức chính quy để kiểm tra số điện thoại
     string pattern = "^" + countryCode + "\\d{9,10}$";
@@ -661,3 +582,11 @@ bool isValidPhoneNumber(const string &phone, const string &countryCode) {
     return regex_match(phone, phoneRegex);
 }
 
+bool checkStatus(const string &status, const string &newStatus) {
+    if (status == "Studying")  return true;
+    if (status == "Graduated") {
+        if (newStatus == "Studying" || newStatus == "Dropped out" || newStatus == "Paused")
+            return false;
+        else return true;
+    }
+}

@@ -32,6 +32,7 @@ public:
     string getPhone() const;
     string getStatus() const;
 
+    void setID(string id);
     void setName(string name);
     void setDob(string dob);
     void setGender(string gender);
@@ -44,8 +45,7 @@ public:
     void setStatus(string status);
 
     // Kiểm tra hợp lệ
-    static bool isValidEmail(const string &email);
-    static bool isValidPhone(const string &phone);
+    static bool isValidPrograms(const string &programs_);
     static bool isValidFaculty(const string &faculty);
     static bool isValidStatus(const string &status);
 
@@ -76,11 +76,9 @@ void loadFromXMLFile(vector<Student> &students, const string &filename);
 
 
 //Ex3
-void manageStudents(vector<Student> &students);
 Student* findStudentById(vector<Student> &students, const string &id);
-void addStudentWithCheck(vector<Student> &students, const string &validDomain, const string &countryCode);
-void updateStudentWithCheck(vector<Student> &students, const string &validDomain, const string &countryCode) ;
 bool isValidEmailDomain(const string &email, const string &domain);
+bool isValidPhoneNumber(const string &phone, const string &countryCode);
 
 
 #endif // STUDENT_H
